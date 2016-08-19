@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/bash
 
 ############################## standard interface to /sw tools
 # Input:
@@ -30,7 +30,6 @@ fi
 
 if [ -z $SW_ENVFILE ]; then
   ### Set Environment (do not remove this line only change what is in between)
-  . ${MODULESHOME}/init/ksh
   . ${SW_BLDDIR}/remodule
   ### End Environment (do not remove this line only change what is in between)
 else
@@ -43,45 +42,10 @@ set -o verbose
 #clear out status file since re-testing
 rm -f status
 
-cd ${SW_WORKDIR}
-tar -xf /sw/sources/${PACKAGE}/testcases/apoa1.tar.gz 
-mv apoa1/* .
-cat > namd.pbs << EOF
-#!/bin/bash
-#PBS -N namd.apoa1
-#PBS -j oe
-#PBS -l nodes=1:ppn=32,walltime=01:00:00
-
-set -o verbose
-cd \$PBS_O_WORKDIR
-
-NAMD_BIN=${SW_BLDDIR}/bin/namd2
-aprun -n 4 \$NAMD_BIN apoa1.namd | tee -a ${SW_BLDDIR}/.running > apoa1.namd.out
-total=\`grep "ENERGY:     500" apoa1.namd.out | cut -d" " -f73| cut -d. -f1\`
-echo \$total
-
-if [ "\$total" == "-222495" ]; then
-  echo "verified" > ${SW_BLDDIR}/status 
-else
- echo "unverified" > ${SW_BLDDIR}/status
-fi
-grep WallClock apoa1.namd.out | awk '{print "YVALUE=",\$2}' \
-  | sed 's/ //g' > ${SW_BLDDIR}/wallclock
-grep CPUTime   apoa1.namd.out | awk '{print "YVALUE=",\$4}' \
-  | sed 's/ //g' > ${SW_BLDDIR}/cputime
-grep Memory    apoa1.namd.out | awk '{print "YVALUE=",\$4}' \
-  | sed 's/ //g' > ${SW_BLDDIR}/memory
-
-JOBID=\`echo \$PBS_JOBID | cut -d "." -f1 \`
-chmod 775 ${SW_BLDDIR}/status
-rm ${SW_BLDDIR}/.running
-cat \${JOBID}.OU >> ${SW_BLDDIR}/test.log
-cat apoa1.namd.out >> ${SW_BLDDIR}/test.log
-chmod 664 ${SW_BLDDIR}/test.log
-EOF
-
-#submit job and touch .running file - marker to infrastructure that
-qsub namd.pbs > ${SW_BLDDIR}/.running
+#cd ${SW_WORKDIR}
+cd $ET_SRCDIR
+TESTJOBNAME=$ET_VER-swretest-$$-$(date +%s)
+simfactory/bin/sim submit --testsuite --walltime 4:0:0 --procs 8 --num-threads 4 $TESTJOBNAME >.running
 
 # qsub returns 0 on successful job launch, so if failure return 1
 if [ $? -ne 0 ]; then

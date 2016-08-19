@@ -1,19 +1,19 @@
-<h1>NAMD</h1>
+<h1>Einstein Toolkit</h1>
 
-<p> Category:  Science Apps-Molecular Dynamics
+<p> Category:  Science Apps-Simulation Framework
 
 <h2>Description</h2>
 
-<a href="http://www.ks.uiuc.edu/Research/namd/">NAMD</a> 
-is a parallel molecular dynamics code designed for high-performance 
-simulation of large biomolecular systems. Based on Charm++ parallel objects, 
-NAMD scales to hundreds of processors on high-end parallel platforms and tens 
-of processors on commodity clusters using gigabit ethernet. 
+<a href="http://www.einsteintoolkit.org/">Einstein Toolkit</a> 
+The Einstein Toolkit currently consists of an open set of over 100 Cactus
+thorns for computational relativity along with associated tools for simulation
+management and visualization. The toolkit includes a vacuum spacetime solver
+(McLachlan), a relativistic hydrodynamics solver (formerly the public version
+of the Whisky code, but now heavily extended), along with thorns for initial
+data, analysis and computational infrastructure. These thorns have been
+developed and improved over many years by many different researchers.
 
-<p>
-Further information on NAMD can be found on
-<a href="http://www.ks.uiuc.edu/Research/namd/">NAMD website.</a>
-
+<!--
 <h2>Use</h2>
 <p>
 NAMD is available as a <a href="/computing-resources/modules">module</a>.
@@ -29,3 +29,4 @@ job submission scripts</a>:
 module load namd
 aprun -n [nprocs] namd2 [other arguments]
 </pre>
+-->

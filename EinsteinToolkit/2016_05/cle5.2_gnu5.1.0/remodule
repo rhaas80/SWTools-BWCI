@@ -1,0 +1,14 @@
+  ### Set Environment (do not remove this line only change what is in between)
+  . ${MODULESHOME}/init/bash
+  # do not load any actual modules since simfactory overwrites this anyway
+  ### End Environment (do not remove this line only change what is in between)
+  
+# load any other dependent modules here
+# env vars here
+
+PACKAGE=einsteintoolkit
+
+ET_VERSION=2016_05
+ET_SRCDIR=ET_${ET_VER}_Source
+
+# these may need to go up in the special section between ###
