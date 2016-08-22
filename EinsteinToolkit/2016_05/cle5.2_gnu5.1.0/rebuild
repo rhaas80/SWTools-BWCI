@@ -48,7 +48,24 @@ cat >>simfactory/bin/defs.local.ini <<EOF
 sourcebasedir = $SW_BLDDIR
 allocation = fyy
 EOF
-simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.org
+# even when the build itself fails we still want to compute the number of error
+# messages to plot them in Jenkins
+simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.org &>make.log
+
+# HACK: make it possible to execute some commands once run finishes
+# the nicer way is of course to define out own SubmitScript or at least to make
+# one *before* building the configuration but that is actually harder to do
+mv configs/sim/SubmitScript configs/sim/SubmitScript.orig
+cat <<EOF >>configs/sim/SubmitScript
+trap "rm @SW_BLDDIR@/.running" EXIT
+`cat configs/sim/SubmitScript.orig`
+if grep --silent 'Number failed *-> 0' @RUNDIR@/TEST/sim/summary.log ; then
+  echo verified >@SW_BLDDIR@/status
+else
+  echo unverified >@SW_BLDDIR@/status
+if 
+"
+EOF
 
 ############################### if this far, return 0
 exit 0
