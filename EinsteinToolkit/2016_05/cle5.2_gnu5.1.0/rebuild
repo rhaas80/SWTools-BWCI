@@ -38,7 +38,7 @@ rm -f status
 
 cd $SW_BLDDIR
 
-tar -xzf /sw/sources/namd/${ET_VER}/${ET_SRCDIR}.tar.gz
+tar -xzf /sw/sources/EinsteinToolkit/${ET_VER}/${ET_SRCDIR}.tar.gz
 
 cd $ET_SRCDIR
 
