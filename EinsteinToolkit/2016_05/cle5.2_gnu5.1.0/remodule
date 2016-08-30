@@ -8,7 +8,7 @@
 
 PACKAGE=einsteintoolkit
 
-ET_VERSION=2016_05
-ET_SRCDIR=ET_${ET_VER}_Source
+ET_VER=2016_05
+ET_SRCDIR=ET_${ET_VER}
 
 # these may need to go up in the special section between ###

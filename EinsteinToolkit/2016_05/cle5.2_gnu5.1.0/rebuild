@@ -43,22 +43,27 @@ tar -xzf /sw/sources/EinsteinToolkit/${ET_VER}/${ET_SRCDIR}.tar.gz
 cd $ET_SRCDIR
 
 simfactory/bin/sim setup-silent --machine bluewaters
-cat >>simfactory/bin/defs.local.ini <<EOF
+cat >>simfactory/etc/defs.local.ini <<EOF
 [bluewaters]
 sourcebasedir = $SW_BLDDIR
+basedir = /scratch/staff/$USER
 allocation = fyy
+submitpattern=(\d+[.]jyc)
 EOF
 # even when the build itself fails we still want to compute the number of error
 # messages to plot them in Jenkins
-simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.org &>make.log
+simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.th &>make.log
 
 # HACK: make it possible to execute some commands once run finishes
 # the nicer way is of course to define out own SubmitScript or at least to make
 # one *before* building the configuration but that is actually harder to do
 mv configs/sim/SubmitScript configs/sim/SubmitScript.orig
+gawk '/^[^#]/&&!wrotetrap { 
+  print "trap \"rm @SW_BLDDIR@/.running\" EXIT"
+  wrotetrap=1
+}
+{print}' configs/sim/SubmitScript.orig > configs/sim/SubmitScript
 cat <<EOF >>configs/sim/SubmitScript
-trap "rm @SW_BLDDIR@/.running" EXIT
-`cat configs/sim/SubmitScript.orig`
 if grep --silent 'Number failed *-> 0' @RUNDIR@/TEST/sim/summary.log ; then
   echo verified >@SW_BLDDIR@/status
 else

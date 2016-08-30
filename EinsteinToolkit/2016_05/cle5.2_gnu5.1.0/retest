@@ -44,10 +44,9 @@ rm -f status
 
 #cd ${SW_WORKDIR}
 cd $ET_SRCDIR
-TESTJOBNAME=$ET_VER-swretest-$$-$(date +%s)
-simfactory/bin/sim submit --testsuite --walltime 4:0:0 --procs 8 --num-threads 4 --substitute SW_BLDDIR "$PWD" $TESTJOBNAME >submit.log && \
-grep --silent '^Submit finished, job id is' <submit.log &&
-touch .running
+: ${TESTJOBNAME=$ET_VER-swretest-$(date +%s)-$$}
+simfactory/bin/sim submit --machine bluewaters --testsuite --walltime 4:0:0 --procs 8 --num-threads 4 --define SW_BLDDIR $PWD $TESTJOBNAME >submit.log && \
+gawk -vrc=1 '/^Submit finished, job id is/{print $6;rc=0;exit} END{exit rc}' <submit.log >.running
 
 # qsub returns 0 on successful job launch, so if failure return 1
 if [ $? -ne 0 ]; then
