@@ -38,7 +38,9 @@ rm -f status
 
 cd $SW_BLDDIR
 
-tar -xzf /sw/sources/EinsteinToolkit/${ET_VER}/${ET_SRCDIR}.tar.gz
+# GNU tar exists with 2 for actual errors and 1 for "file changed while
+# reading" yet 2 is treated specially by swtools
+tar -xzf /sw/sources/EinsteinToolkit/${ET_VER}/${ET_SRCDIR}.tar.gz || exit 1
 
 cd $ET_SRCDIR
 
