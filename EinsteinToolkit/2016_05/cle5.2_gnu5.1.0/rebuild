@@ -54,7 +54,7 @@ submitpattern=(\d+[.]jyc)
 EOF
 # even when the build itself fails we still want to compute the number of error
 # messages to plot them in Jenkins
-simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.th &>make.log
+simfactory/bin/sim build --machine bluewaters --thornlist manifest/einsteintoolkit.th 2>&1 | tee make.log
 
 # HACK: make it possible to execute some commands once run finishes
 # the nicer way is of course to define out own SubmitScript or at least to make
