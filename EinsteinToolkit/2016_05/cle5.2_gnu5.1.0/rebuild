@@ -51,6 +51,7 @@ sourcebasedir = $SW_BLDDIR
 basedir = $SW_WORKDIR
 allocation = fyy
 submitpattern=(\d+[.]jyc)
+rsynccmd=rsync
 EOF
 # even when the build itself fails we still want to compute the number of error
 # messages to plot them in Jenkins
