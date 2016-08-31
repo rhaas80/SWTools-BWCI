@@ -48,7 +48,7 @@ simfactory/bin/sim setup-silent --machine bluewaters
 cat >>simfactory/etc/defs.local.ini <<EOF
 [bluewaters]
 sourcebasedir = $SW_BLDDIR
-basedir = /scratch/staff/$USER
+basedir = $SW_WORKDIR
 allocation = fyy
 submitpattern=(\d+[.]jyc)
 EOF
