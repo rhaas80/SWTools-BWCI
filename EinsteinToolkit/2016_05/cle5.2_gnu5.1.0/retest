@@ -46,7 +46,8 @@ rm -f status
 cd $ET_SRCDIR
 : ${TESTJOBNAME=$ET_VER-swretest-$(date +%s)-$$}
 simfactory/bin/sim submit --machine bluewaters --testsuite --select-test=CactusWave/WaveToyC --walltime 4:0:0 --procs 8 --num-threads 4 --define SW_BLDDIR $PWD $TESTJOBNAME >submit.log && \
-gawk -vrc=1 '/^Submit finished, job id is/{print $6;rc=0;exit} END{exit rc}' <submit.log >.running
+gawk -vrc=1 '/^Submit finished, job id is/{print $6;rc=0;exit} END{exit rc}' <submit.log >../.running
+cd ..
 
 # qsub returns 0 on successful job launch, so if failure return 1
 if [ $? -ne 0 ]; then
@@ -58,8 +59,6 @@ else
   cat submit.log
   exit 2
 fi
-
-cd ../
 
 ############################### if this far, return 0
 exit 0
